@@ -30,6 +30,11 @@ function index()
 	entry({"admin", "services", "shadowsocks", "access-control"},
 		cbi("shadowsocks/access-control"),
 		_("Access Control"), 30).leaf = true
+	
+	entry({"admin", "services", "shadowsocks", "ssmgr"},
+		cbi("shadowsocks/ssmgr"),
+		_("Ssmgr"), 40).leaf = true
+
 end
 
 local function is_running(name)

@@ -27,3 +27,8 @@ config servers
 
 config access_control
 	option self_proxy '1'
+
+config ssmgr
+	option enable '0'
+	option site 'https://yourwebsite.com/'
+
