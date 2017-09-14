@@ -20,5 +20,13 @@ o.default     = luci.sys.exec("ifconfig | grep 'eth0' | awk '{print $5}' | sed '
 o.datatype    = "string"
 o.rmempty     = false
 o.readonly    = true
+                                    
+button = s:option(Button, "_button", "refresh")       
+button.inputtitle = translate("Refresh")
+button.inputstyle = "apply"
+                                             
+function button.write(self, section, value)
+  luci.sys.call("sh /usr/bin/ssmgr")
+end  
 
 return m
