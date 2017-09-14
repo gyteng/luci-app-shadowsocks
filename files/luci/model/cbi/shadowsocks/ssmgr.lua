@@ -20,13 +20,27 @@ o.default     = luci.sys.exec("ifconfig | grep 'eth0' | awk '{print $5}' | sed '
 o.datatype    = "string"
 o.rmempty     = false
 o.readonly    = true
-                                    
-button = s:option(Button, "_button", "refresh")       
+
+button = s:option(Button, "_button", "refresh")
 button.inputtitle = translate("Refresh")
 button.inputstyle = "apply"
-                                             
+
 function button.write(self, section, value)
   luci.sys.call("sh /usr/bin/ssmgr")
-end  
+end
+
+buttonSsmgr = s:option(Button, "_button", "ssmgr")
+buttonSsmgr.inputtitle = translate("Ssmgr")
+buttonSsmgr.inputstyle = "apply"
+
+function buttonSsmgr.write(self, section, value)
+  uci = luci.model.uci.cursor()
+  uci:foreach("shadowsocks", "ssmgr", function(s)
+    address = s.site
+  end)
+  mac = luci.sys.exec("ifconfig | grep 'eth0' | awk '{print $5}' | sed 's/\://g'")
+  url = address .. "home/login/" .. mac
+  luci.http.redirect(url)
+end
 
 return m
