@@ -29,7 +29,7 @@ function button.write(self, section, value)
   luci.sys.call("sh /usr/bin/ssmgr")
 end
 
-buttonSsmgr = s:option(Button, "_button", "ssmgr")
+buttonSsmgr = s:option(Button, "_buttonSsmgr", "ssmgr")
 buttonSsmgr.inputtitle = translate("Ssmgr")
 buttonSsmgr.inputstyle = "apply"
 
