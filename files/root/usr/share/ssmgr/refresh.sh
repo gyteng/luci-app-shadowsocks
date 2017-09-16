@@ -13,6 +13,7 @@ do
   uci delete shadowsocks.@servers[0]
   let j+=1
 done
+default_server_name=$(echo ${account} | /usr/share/ssmgr/JSON.sh -l | egrep '\["default","name"\]' | awk '{print $2}' | sed 's/\"//g')
 stop=0
 i=0
 while [ $stop -eq 0 ]
@@ -40,18 +41,25 @@ do
 done
 uci commit shadowsocks
 
-# i=1
-# while [ true ]
-# do
-#   col='{print $'$i'}'
-#   name=$(uci get shadowsocks.@transparent_proxy[0].main_server | awk -F " " "${col}")
-#   if [ ${#name} -lt 3  ]; then
-#     break
-#   fi
-#   exists=$(uci show shadowsocks.${name}.server)
-#   if [ ${#exists} -lt 10  ]; then
-#     uci del_list shadowsocks.@transparent_proxy[0].main_server=${name}
-#   fi
-#   let i+=1
-# done
-# uci commit shadowsocks
+i=1
+while [ true ]
+do
+  col='{print $'$i'}'
+  name=$(uci get shadowsocks.@transparent_proxy[0].main_server | awk -F " " "${col}")
+  if [ ${#name} -lt 3  ]; then
+    break
+  fi
+  exists=$(uci show shadowsocks.${name}.server)
+  if [ ${#exists} -lt 10  ]; then
+    uci del_list shadowsocks.@transparent_proxy[0].main_server=${name}
+  fi
+  let i+=1
+done
+exists=$(uci get shadowsocks.@transparent_proxy[0].main_server)
+if [ ${#exists} -lt 3  ]; then
+  grep_word="alias=\'${default_server_name}\'"
+  section=$(uci show shadowsocks | grep $grep_word | awk -F "." '{print $2}')
+  section_name=$(uci show shadowsocks.${section} | grep $grep_word | awk -F "." '{print $2}')
+  uci add_list shadowsocks.@transparent_proxy[0].main_server=${section_name}
+fi
+uci commit shadowsocks
