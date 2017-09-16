@@ -39,3 +39,19 @@ do
   fi
 done
 uci commit shadowsocks
+
+# i=1
+# while [ true ]
+# do
+#   col='{print $'$i'}'
+#   name=$(uci get shadowsocks.@transparent_proxy[0].main_server | awk -F " " "${col}")
+#   if [ ${#name} -lt 3  ]; then
+#     break
+#   fi
+#   exists=$(uci show shadowsocks.${name}.server)
+#   if [ ${#exists} -lt 10  ]; then
+#     uci del_list shadowsocks.@transparent_proxy[0].main_server=${name}
+#   fi
+#   let i+=1
+# done
+# uci commit shadowsocks
