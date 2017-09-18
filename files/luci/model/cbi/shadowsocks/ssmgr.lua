@@ -5,9 +5,6 @@ m = Map("shadowsocks", translate("shadowsocks"))
 s = m:section(TypedSection, "ssmgr", translate("General Setting"))
 s.anonymous   = true
 
-o = s:option(Flag, "enable", translate("Enable"))
-o.rmempty     = false
-
 o = s:option(Value, "site", translate("Site"))
 o.placeholder = "website"
 o.default     = "https://wall.gyteng.com/"
@@ -28,6 +25,9 @@ button.inputstyle = "apply"
 function button.write(self, section, value)
   luci.sys.call("sh /usr/bin/ssmgr")
 end
+
+o = s:option(Flag, "auto_refresh", translate("Auto refresh"))
+o.rmempty = false
 
 buttonSsmgr = s:option(Button, "_buttonSsmgr", "ssmgr")
 buttonSsmgr.inputtitle = translate("Ssmgr")

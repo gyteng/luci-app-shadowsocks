@@ -81,6 +81,7 @@ define Package/luci-app-shadowsocks/install
 	$(INSTALL_DATA) ./files/root/etc/config/shadowsocks $(1)/etc/config/shadowsocks
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/root/etc/init.d/shadowsocks $(1)/etc/init.d/shadowsocks
+	$(INSTALL_BIN) ./files/root/etc/init.d/ssmgr $(1)/etc/init.d/ssmgr
 	$(INSTALL_DIR) $(1)/etc/uci-defaults
 	$(INSTALL_BIN) ./files/root/etc/uci-defaults/luci-shadowsocks $(1)/etc/uci-defaults/luci-shadowsocks
 	$(INSTALL_DIR) $(1)/usr/bin
@@ -89,6 +90,7 @@ define Package/luci-app-shadowsocks/install
 	$(INSTALL_DIR) $(1)/usr/share/ssmgr
 	$(INSTALL_BIN) ./files/root/usr/share/ssmgr/refresh.sh$(2) $(1)/usr/share/ssmgr/refresh.sh
 	$(INSTALL_BIN) ./files/root/usr/share/ssmgr/JSON.sh$(2) $(1)/usr/share/ssmgr/JSON.sh
+	$(INSTALL_BIN) ./files/root/usr/share/ssmgr/auto.sh$(2) $(1)/usr/share/ssmgr/auto.sh
 endef
 
 Package/luci-app-shadowsocks-without-ipset/install = $(call Package/luci-app-shadowsocks/install,$(1),-without-ipset)
