@@ -29,6 +29,7 @@ config access_control
 	option self_proxy '1'
 
 config ssmgr
-	option enable '0'
 	option site 'https://yourwebsite.com/'
+	option auto_refresh '0'
+	option use_default_server '1'
 
