@@ -2,8 +2,9 @@
 
 ssmgrAddress=$(uci get shadowsocks.@ssmgr[0].site)
 macAddress=`ifconfig | grep 'eth0' | awk '{print $5}' | sed 's/\://g'`
+read -r oldAccount < ./account.txt
 account=$(curl -s ${ssmgrAddress}api/user/account/mac/${macAddress})
-echo $account
+
 if [ ${#account} -lt 10 ]; then
   return
 fi
@@ -66,3 +67,8 @@ if [ ${#exists} -lt 3  ]; then
   uci add_list shadowsocks.@transparent_proxy[0].main_server=${section_name}
 fi
 uci commit shadowsocks
+
+if [ "$oldAccount" != "$account" ]; then
+  /etc/init.d/shadowsocks restart
+  echo $account > ./account.txt
+fi 
