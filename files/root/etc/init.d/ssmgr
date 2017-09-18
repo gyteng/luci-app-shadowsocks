@@ -6,9 +6,10 @@ STOP=15
 NAME=ssmgr
 
 start() {
+  kill -9 $(ps | grep /usr/share/ssmgr/auto.sh| grep -v grep | awk '{print $1}')
 	/usr/share/ssmgr/auto.sh
 }
 
 stop() {
-	echo 'AA'
+	kill -9 $(ps | grep /usr/share/ssmgr/auto.sh| grep -v grep | awk '{print $1}')
 }
