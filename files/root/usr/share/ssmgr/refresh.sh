@@ -42,6 +42,7 @@ done
 uci commit shadowsocks
 
 i=1
+use_default_server=$(uci get shadowsocks.@ssmgr[0].use_default_server)
 while [ true ]
 do
   col='{print $'$i'}'
@@ -50,7 +51,9 @@ do
     break
   fi
   exists=$(uci show shadowsocks.${name}.server)
-  if [ ${#exists} -lt 10  ]; then
+  if [ ${use_default_server} -eq 1 ]; then
+    uci del_list shadowsocks.@transparent_proxy[0].main_server=${name}
+  elif [ ${#exists} -lt 10 ]; then
     uci del_list shadowsocks.@transparent_proxy[0].main_server=${name}
   fi
   let i+=1

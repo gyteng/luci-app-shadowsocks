@@ -29,6 +29,9 @@ end
 o = s:option(Flag, "auto_refresh", translate("Auto refresh"))
 o.rmempty = false
 
+o = s:option(Flag, "use_default_server", translate("Use default server"))
+o.rmempty = false
+
 buttonSsmgr = s:option(Button, "_buttonSsmgr", "ssmgr")
 buttonSsmgr.inputtitle = translate("Ssmgr")
 buttonSsmgr.inputstyle = "apply"
