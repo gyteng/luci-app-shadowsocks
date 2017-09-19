@@ -7,5 +7,5 @@ do
   if [ $auto -eq 1 ]; then
     /usr/bin/ssmgr
   fi
-  sleep 120
+  sleep 300
 done

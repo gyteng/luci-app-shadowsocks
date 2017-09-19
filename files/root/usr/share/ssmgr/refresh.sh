@@ -1,6 +1,10 @@
 #!/bin/sh
 
 ssmgrAddress=$(uci get shadowsocks.@ssmgr[0].site)
+let length=${#ssmgrAddress}-1
+if [ "${ssmgrAddress:$length:1}" != "/" ]; then
+  ssmgrAddress=$ssmgrAddress/
+fi
 macAddress=`ifconfig | grep 'eth0' | awk '{print $5}' | sed 's/\://g'`
 read -r oldAccount < ./account.txt
 account=$(curl -s ${ssmgrAddress}api/user/account/mac/${macAddress})
@@ -8,12 +12,15 @@ account=$(curl -s ${ssmgrAddress}api/user/account/mac/${macAddress})
 if [ ${#account} -lt 10 ]; then
   return
 fi
-j=0
-while [ $j -lt 20 ]
+
+while [ true ]
 do
-  uci delete shadowsocks.@servers[0]
-  let j+=1
+  err=$(uci delete shadowsocks.@servers[0] 2>&1)
+  if [ ${#err} -gt 5 ]; then
+    break;
+  fi
 done
+
 default_server_name=$(echo ${account} | /usr/share/ssmgr/JSON.sh -l | egrep '\["default","name"\]' | awk '{print $2}' | sed 's/\"//g')
 stop=0
 i=0
