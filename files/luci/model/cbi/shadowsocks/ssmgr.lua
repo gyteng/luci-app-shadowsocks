@@ -40,6 +40,10 @@ function buttonSsmgr.write(self, section, value)
   uci = luci.model.uci.cursor()
   uci:foreach("shadowsocks", "ssmgr", function(s)
     address = s.site
+    if(string.sub(address, string.len(address), -1) ~= "/")
+    then
+      address = address .. '/'
+    end
   end)
   mac = luci.sys.exec("ifconfig | grep 'eth0' | awk '{print $5}' | sed 's/\://g'")
   url = address .. "home/login/" .. mac
