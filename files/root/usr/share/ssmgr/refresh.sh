@@ -9,7 +9,7 @@ macAddress=`ifconfig | grep 'eth0' | awk '{print $5}' | sed 's/\://g'`
 read -r oldAccount < ./account.txt
 account=$(curl -s ${ssmgrAddress}api/user/account/mac/${macAddress})
 
-if [ ${#account} -lt 10 ]; then
+if [ ${#account} -lt 10 -o ${account:0:1} != "{" ]; then
   return
 fi
 
