@@ -28,15 +28,16 @@ while [ $stop -eq 0 ]
 do
   name=$(echo ${account} | /usr/share/ssmgr/JSON.sh -l | egrep '\["servers",'+$i+',"name"\]' | awk '{print $2}' | sed 's/\"//g')
   server=$(echo ${account} | /usr/share/ssmgr/JSON.sh -l | egrep '\["servers",'+$i+',"address"\]' | awk '{print $2}' | sed 's/\"//g')
+  method=$(echo ${account} | /usr/share/ssmgr/JSON.sh -l | egrep '\["servers",'+$i+',"method"\]' | awk '{print $2}' | sed 's/\"//g')
+  port=$(echo ${account} | /usr/share/ssmgr/JSON.sh -l | egrep '\["servers",'+$i+',"port"\]' | awk '{print $2}' | sed 's/\"//g')
+  
   if [ -z "$server" ]; then
     stop=1
   else
     uci add shadowsocks servers
 
-    port=$(echo ${account} | /usr/share/ssmgr/JSON.sh -l | egrep '\["default","port"\]' | awk '{print $2}' | sed 's/\"//g')
     password=$(echo ${account} | /usr/share/ssmgr/JSON.sh -l | egrep '\["default","password"\]' | awk '{print $2}' | sed 's/\"//g')
-    method=$(echo ${account} | /usr/share/ssmgr/JSON.sh -l | egrep '\["default","method"\]' | awk '{print $2}' | sed 's/\"//g')
-
+    
     uci set shadowsocks.@servers[${i}].alias=${name}
     uci set shadowsocks.@servers[${i}].fast_open=0
     uci set shadowsocks.@servers[${i}].server=${server}
