@@ -11,7 +11,7 @@ o.default     = "https://wall.gyteng.com/"
 o.datatype    = "string"
 o.rmempty     = false
 
-o = s:option(Value, "mac", translate("MAC address"))
+o = s:option(Value, "mac", translate("MAC-address"))
 o.placeholder = "mac"
 o.default     = luci.sys.exec("ifconfig | grep 'eth0' | awk '{print $5}' | sed 's/\://g'")
 o.datatype    = "string"
